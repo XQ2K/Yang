@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello Kitty 预约申请</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #fff7fb 0%, #ffeef5 100%);
+      color: #8f245c;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 28px;
+      padding: 24px;
+      border: 2px solid #ffd1e3;
+      box-shadow: 0 12px 30px rgba(236, 72, 153, 0.10);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin: 8px 0 10px;
+      font-weight: 800;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    p {
+      line-height: 1.7;
+      color: #8a4b69;
+      margin: 0;
+    }
+
+    .muted {
+      color: #c2558b;
+      font-size: 14px;
+    }
+
+    .section-title {
+      margin: 26px 0 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #9f2f68;
+    }
+
+    .date-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .date-btn, .time-btn {
+      border: 2px solid #ffd6e7;
+      background: #fff9fc;
+      cursor: pointer;
+      transition: 0.2s ease;
+      color: #111827;
+    }
+
+    .date-btn {
+      border-radius: 22px;
+      padding: 14px;
+      text-align: left;
+    }
+
+    .date-btn.active, .time-btn.active {
+      background: linear-gradient(135deg, #ff6fa8 0%, #ff4f91 100%);
+      color: #fff;79b0 0%, #ff5d97 100%);
+      color: #fff;
+      border-color: #ff5d97;
+    }
+
+    .date-btn:hover, .time-btn:hover {
+      border-color: #ff9cc2;
+    }
+
+    .time-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .time-btn {
+      border-radius: 999px;
+      box-shadow: 0 4px 10px rgba(255, 105, 155, 0.10);
+      padding: 10px 16px;
+      font-size: 14px;
+    }
+
+    .summary {
+      margin-top: 20px;
+      background: #fff3f8;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 14px;
+    }
+
+    .summary-row {
+      margin-top: 8px;
+      color: #374151;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      color: #374151;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 2px solid #ffd6e7;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+      color: #111827;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #ff8fbb;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      background: #111827;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.95;
+    }
+
+    .tip {
+      margin-top: 14px;
+      background: #fff0f7;
+      color: #c0266d;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .error-tip {
+      margin-top: 14px;
+      background: #fff1f2;
+      color: #be185d;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .note-box {
+      margin-top: 18px;
+      border: 2px dashed #ffc4dd;
+      background: #fff8fb;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .note-box h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: #111827;
+    }
+
+    .note-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #4b5563;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      .grid { grid-template-columns: 1fr; }
+      .date-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <div class="muted">Hello Kitty Style Appointment Page</div>
+        <h1>🎀 预约申请</h1>
+        <p>
+          请在本页面选择日期与时间，并填写基本信息后提交申请。提交成功后，相关内容将直接发送至指定邮箱，以便后续确认与安排。
+        </p>
+
+        <div class="section-title">快速选择日期</div>
+        <div class="date-grid" id="dateGrid"></div>
+
+        <div class="section-title">快速选择时间段</div>
+        <div class="time-list" id="timeList"></div>
+
+        <div class="section-title">自定义日期与时间</div>
+        <div class="field">
+          <label for="customDate">日期</label>
+          <input id="customDate" type="date" />
+        </div>
+        <div class="field">
+          <label for="customTime">时间</label>
+          <input id="customTime" type="time" />
+        </div>
+
+        <div class="summary">
+          <div><strong>🎀 当前预约信息</strong></div>
+          <div class="summary-row">日期与时间：<span id="selectionText">-</span></div>
+          <div class="summary-row">提交方式：在线表单邮件转发</div>
+        </div>
+
+        <div class="note-box">
+          <h3>📌 说明</h3>
+          <ul>
+            <li>可使用上方快速选项，也可直接手动填写日期与时间。</li>
+            <li>系统允许选择任意日期与时间，包括历史时间。</li>
+            <li>提交后将进入邮箱处理流程，是否最终确认以人工回复为准。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>💌 提交申请</h2>
+        <p class="muted">表单提交后，预约内容将直接发送至收件邮箱，不依赖访问者本地邮箱客户端。</p>
+
+        <form id="bookingForm">
+          <input type="hidden" name="access_key" value="ffbf96cd-f8c0-4857-9e6e-2c613f92ada1" />
+          <input type="hidden" name="subject" value="新的预约申请" />
+          <input type="hidden" name="from_name" value="Appointment Request Page" />
+          <input type="hidden" id="selectedDateInput" name="date" value="" />
+          <input type="hidden" id="selectedTimeInput" name="time" value="" />
+
+          <div class="field">
+            <label for="name">姓名</label>
+            <input id="name" name="name" type="text" placeholder="请输入姓名" required />
+          </div>
+
+          <div class="field">
+            <label for="contact">联系方式</label>
+            <input id="contact" name="contact" type="text" placeholder="请输入邮箱、手机号或其他联系方式" required />
+          </div>
+
+          <div class="field">
+            <label for="urgency">紧迫程度</label>
+            <select id="urgency" name="urgency" required>
+              <option value="">请选择紧迫程度</option>
+              <option value="低">低</option>
+              <option value="中">中</option>
+              <option value="高">高</option>
+              <option value="非常紧急">非常紧急</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="purpose">申请事项</label>
+            <input id="purpose" name="purpose" type="text" placeholder="请简要说明预约目的" required />
+          </div>
+
+          <div class="field">
+            <label for="note">补充说明</label>
+            <textarea id="note" name="note" placeholder="如有其他需要说明的内容，可填写于此"></textarea>
+          </div>
+
+          <button class="submit-btn" type="submit">提交预约申请</button>
+          <div class="tip" id="successTip">预约申请已成功提交。</div>
+          <div class="error-tip" id="errorTip">提交失败，请稍后重试。</div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const WEEKDAY_NAMES = [
+  'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+];
+
+const DEFAULT_TIMES = ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'];
+
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function generateSlots(days = 7) {
+  const result = [];
+  const today = new Date();
+
+  for (let i = 0; i < days; i++) {
+    const current = new Date(today);
+    current.setDate(today.getDate() + i);
+
+    result.push({
+      date: formatDate(current),
+      weekday: WEEKDAY_NAMES[current.getDay()],
+      times: [...DEFAULT_TIMES]
+    });
+  }
+
+  return result;
+}
+
+const slots = generateSlots(7);
+
+    let selectedDate = slots[0].date;
+    let selectedTime = slots[0].times[0];
+
+    const dateGrid = document.getElementById('dateGrid');
+    const timeList = document.getElementById('timeList');
+    const selectionText = document.getElementById('selectionText');
+    const bookingForm = document.getElementById('bookingForm');
+    const successTip = document.getElementById('successTip');
+    const errorTip = document.getElementById('errorTip');
+    const selectedDateInput = document.getElementById('selectedDateInput');
+    const selectedTimeInput = document.getElementById('selectedTimeInput');
+    const customDateInput = document.getElementById('customDate');
+    const customTimeInput = document.getElementById('customTime');
+
+    function renderDates() {
+      dateGrid.innerHTML = '';
+      slots.forEach(slot => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'date-btn' + (slot.date === selectedDate ? ' active' : '');
+        btn.innerHTML = `
+          <div style="font-size:13px; opacity:.8;">${slot.weekday}</div>
+          <div style="margin-top:6px; font-size:16px; font-weight:700;">${slot.date}</div>
+          <div style="margin-top:8px; font-size:12px; opacity:.8;">${slot.times.length} 个时间段</div>
+        `;
+        btn.onclick = () => {
+          selectedDate = slot.date;
+          selectedTime = slot.times[0];
+          customDateInput.value = slot.date;
+          customTimeInput.value = slot.times[0];
+          renderDates();
+          renderTimes();
+          renderSummary();
+        };
+        dateGrid.appendChild(btn);
+      });
+    }
+
+    function renderTimes() {
+      const current = slots.find(s => s.date === selectedDate) || slots[0];
+      timeList.innerHTML = '';
+      current.times.forEach(time => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'time-btn' + (time === selectedTime ? ' active' : '');
+        btn.textContent = time;
+        btn.onclick = () => {
+          selectedTime = time;
+          customTimeInput.value = time;
+          renderTimes();
+          renderSummary();
+        };
+        timeList.appendChild(btn);
+      });
+    }
+
+    function renderSummary() {
+      selectionText.textContent = `${selectedDate} ${selectedTime}`;
+      selectedDateInput.value = selectedDate;
+      selectedTimeInput.value = selectedTime;
+    }
+
+    customDateInput.addEventListener('change', function () {
+      if (customDateInput.value) {
+        selectedDate = customDateInput.value;
+        renderDates();
+        renderTimes();
+        renderSummary();
+      }
+    });
+
+    customTimeInput.addEventListener('change', function () {
+      if (customTimeInput.value) {
+        selectedTime = customTimeInput.value;
+        renderTimes();
+        renderSummary();
+      }
+    });
+
+    bookingForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      successTip.style.display = 'none';
+      errorTip.style.display = 'none';
+
+      if (customDateInput.value) selectedDate = customDateInput.value;
+      if (customTimeInput.value) selectedTime = customTimeInput.value;
+      renderSummary();
+
+      const formData = new FormData(bookingForm);
+
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          successTip.style.display = 'block';
+          bookingForm.reset();
+          selectedDate = slots[0].date;
+          selectedTime = slots[0].times[0];
+          customDateInput.value = selectedDate;
+          customTimeInput.value = selectedTime;
+          renderDates();
+          renderTimes();
+          renderSummary();
+        } else {
+          errorTip.style.display = 'block';
+          console.error(result);
+        }
+      } catch (error) {
+        errorTip.style.display = 'block';
+        console.error(error);
+      }
+    });
+
+    customDateInput.value = selectedDate;
+    customTimeInput.value = selectedTime;
+    renderDates();
+    renderTimes();
+    renderSummary();
+  </script>
+</body>
+</html>
