@@ -10,14 +10,19 @@
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: linear-gradient(180deg, #fff7fb 0%, #ffeef5 100%);
-      color: #8f245c;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255,255,255,0.95) 0 22px, transparent 23px),
+        radial-gradient(circle at 88% 12%, rgba(255,240,246,0.95) 0 18px, transparent 19px),
+        radial-gradient(circle at 18% 82%, rgba(255,244,248,0.95) 0 20px, transparent 21px),
+        linear-gradient(180deg, #fff7fb 0%, #ffeef5 100%);
+      color: #6b2146;
     }
 
     .container {
       max-width: 1120px;
       margin: 0 auto;
       padding: 32px 16px;
+      position: relative;
     }
 
     .grid {
@@ -26,12 +31,24 @@
       gap: 20px;
     }
 
+    .card::after {
+      content: "✿";
+      position: absolute;
+      right: 18px;
+      top: 14px;
+      font-size: 18px;
+      color: #ff9cc2;
+      opacity: 0.75;
+    }
+
     .card {
-      background: rgba(255, 255, 255, 0.96);
+      background: rgba(255, 255, 255, 0.97);
       border-radius: 28px;
       padding: 24px;
       border: 2px solid #ffd1e3;
       box-shadow: 0 12px 30px rgba(236, 72, 153, 0.10);
+      position: relative;
+      overflow: hidden;
     }
 
     h1 {
@@ -75,7 +92,7 @@
       background: #fff9fc;
       cursor: pointer;
       transition: 0.2s ease;
-      color: #111827;
+      color: #8f245c;
     }
 
     .date-btn {
@@ -85,8 +102,7 @@
     }
 
     .date-btn.active, .time-btn.active {
-      background: linear-gradient(135deg, #ff6fa8 0%, #ff4f91 100%);
-      color: #fff;79b0 0%, #ff5d97 100%);
+      background: linear-gradient(135deg, #ff79b0 0%, #ff5d97 100%);
       color: #fff;
       border-color: #ff5d97;
     }
@@ -156,16 +172,19 @@
     .submit-btn {
       width: 100%;
       border: none;
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 14px 18px;
-      background: #111827;
+      background: linear-gradient(135deg, #ff6fa8 0%, #ff4f91 100%);
       color: #fff;
       font-size: 15px;
       cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.2px;
     }
 
     .submit-btn:hover {
       opacity: 0.95;
+      transform: translateY(-1px);
     }
 
     .tip {
@@ -222,7 +241,13 @@
     <div class="grid">
       <div class="card">
         <div class="muted">Hello Kitty Style Appointment Page</div>
-        <h1>🎀 预约申请</h1>
+        <div style="display:flex; align-items:center; gap:12px; margin-top:8px; margin-bottom:10px;">
+          <div style="width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg,#fff 0%,#ffd6e7 100%); border:2px solid #ffb3d1; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 6px 14px rgba(255,105,155,0.14);">🎀</div>
+          <div>
+            <h1 style="margin:0;">Hello Kitty 预约申请</h1>
+            <div class="muted" style="margin-top:4px;">Sweet appointment request page</div>
+          </div>
+        </div>
         <p>
           请在本页面选择日期与时间，并填写基本信息后提交申请。提交成功后，相关内容将直接发送至指定邮箱，以便后续确认与安排。
         </p>
@@ -250,6 +275,9 @@
         </div>
 
         <div class="note-box">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px; color:#d14d8f; font-size:13px;">
+            <span>♡</span><span>Kitty-style memo</span>
+          </div>
           <h3>📌 说明</h3>
           <ul>
             <li>可使用上方快速选项，也可直接手动填写日期与时间。</li>
@@ -261,6 +289,7 @@
 
       <div class="card">
         <h2>💌 提交申请</h2>
+        <div style="margin:-2px 0 14px; color:#d14d8f; font-size:13px;">Please fill in the form below ♡</div>
         <p class="muted">表单提交后，预约内容将直接发送至收件邮箱，不依赖访问者本地邮箱客户端。</p>
 
         <form id="bookingForm">
@@ -281,13 +310,13 @@
           </div>
 
           <div class="field">
-            <label for="urgency">紧迫程度</label>
+            <label for="urgency">お急ぎ度</label>
             <select id="urgency" name="urgency" required>
-              <option value="">请选择紧迫程度</option>
-              <option value="低">低</option>
-              <option value="中">中</option>
-              <option value="高">高</option>
-              <option value="非常紧急">非常紧急</option>
+              <option value="">お急ぎ度を選んでください</option>
+              <option value="のんびり">のんびり</option>
+              <option value="ふつう">ふつう</option>
+              <option value="ちょっと急ぎ">ちょっと急ぎ</option>
+              <option value="とても急ぎ">とても急ぎ</option>
             </select>
           </div>
 
@@ -301,7 +330,7 @@
             <textarea id="note" name="note" placeholder="如有其他需要说明的内容，可填写于此"></textarea>
           </div>
 
-          <button class="submit-btn" type="submit">提交预约申请</button>
+          <button class="submit-btn" type="submit">♡ 提交预约申请 ♡</button>
           <div class="tip" id="successTip">预约申请已成功提交。</div>
           <div class="error-tip" id="errorTip">提交失败，请稍后重试。</div>
         </form>
@@ -310,38 +339,14 @@
   </div>
 
   <script>
-    const WEEKDAY_NAMES = [
-  'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-];
-
-const DEFAULT_TIMES = ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'];
-
-function formatDate(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-function generateSlots(days = 7) {
-  const result = [];
-  const today = new Date();
-
-  for (let i = 0; i < days; i++) {
-    const current = new Date(today);
-    current.setDate(today.getDate() + i);
-
-    result.push({
-      date: formatDate(current),
-      weekday: WEEKDAY_NAMES[current.getDay()],
-      times: [...DEFAULT_TIMES]
-    });
-  }
-
-  return result;
-}
-
-const slots = generateSlots(7);
+    const slots = [
+      { date: '2026-03-22', weekday: 'Sunday', times: ['08:00', '10:00', '14:00', '16:00', '19:00', '21:00'] },
+      { date: '2026-03-23', weekday: 'Monday', times: ['09:00', '11:00', '13:00', '15:00', '18:00', '20:00'] },
+      { date: '2026-03-24', weekday: 'Tuesday', times: ['08:30', '10:30', '12:30', '14:30', '17:30', '20:30'] },
+      { date: '2026-03-25', weekday: 'Wednesday', times: ['09:00', '12:00', '15:00', '18:00', '20:00', '22:00'] },
+      { date: '2026-03-26', weekday: 'Thursday', times: ['08:00', '11:00', '14:00', '16:00', '19:00', '21:00'] },
+      { date: '2026-03-27', weekday: 'Friday', times: ['09:30', '12:30', '15:30', '18:30', '20:30', '22:30'] }
+    ];
 
     let selectedDate = slots[0].date;
     let selectedTime = slots[0].times[0];
